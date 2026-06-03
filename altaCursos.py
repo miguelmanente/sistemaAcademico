@@ -43,12 +43,12 @@ def info_cursos():
 
     # -----------------------------  Labels y Entrys distribuidos en dos columnas  ------------------------------------
     # Labels y entry que permite ingregar elnombre de la materia
-    ttk.Label(frame_superior, text="Nbre del Curso :").grid(row=0, column=0, sticky="e", padx=5, pady=5)
-    ttk.Entry(frame_superior, textvariable=nombre).grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+    ttk.Label(frame_superior, text="Nbre del Curso :", font=("Arial", 12)).grid(row=0, column=0, sticky="e", padx=5, pady=5)
+    ttk.Entry(frame_superior, textvariable=nombre, font=("Arial", 12)).grid(row=0, column=1, sticky="ew", padx=5, pady=5)
 
       # Labels y entry para ingresar el turno del curso 
-    ttk.Label(frame_superior, text="Turno del Curso:").grid(row=0, column=2, sticky="e", padx=5, pady=5)
-    ttk.Entry(frame_superior, textvariable=turno).grid(row=0, column=3, sticky="ew", padx=5, pady=5)
+    ttk.Label(frame_superior, text="Turno del Curso:", font=("Arial", 12)).grid(row=0, column=2, sticky="e", padx=5, pady=5)
+    ttk.Entry(frame_superior, textvariable=turno, font=("Arial", 12)).grid(row=0, column=3, sticky="ew", padx=5, pady=5)
 
  
     # =========================
@@ -126,7 +126,7 @@ def info_cursos():
         if not nombre.get() or not nombre.get() or not turno.get():
             messagebox.showwarning(
                 "Campos obligatorios",
-                "Nombres del curso, y turno son obligatorios."
+                "Nombres del curso, y turno son obligatorios.", parent=ventana
             )
             return
         
@@ -146,13 +146,13 @@ def info_cursos():
             conn.commit()
             conn.close()
 
-            messagebox.showinfo("Éxito", "Curso guardado correctamente.")
+            messagebox.showinfo("Éxito", "Curso guardado correctamente.", parent=ventana)
 
             cargar_datos_treeview()
            
 
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudieron guardar los Cursos:\n{e}")
+            messagebox.showerror("Error", f"No se pudieron guardar los Cursos:\n{e}", parent=ventana)
     # ----------------------------------------------------------------------------------
 
     # ---  Función que permite selecccionar un registro en el treview ------------------
@@ -180,7 +180,7 @@ def info_cursos():
     def modificar_curso():
         nonlocal id_seleccionado
         if not id_seleccionado:
-            messagebox.showwarning("Atención", "Seleccione un registro")
+            messagebox.showwarning("Atención", "Seleccione un registro", parent=ventana)
             return
 
         conn = conectar()
@@ -201,16 +201,16 @@ def info_cursos():
 
         cargar_datos_treeview()
         limpiar_campos()
-        messagebox.showinfo("Éxito", "Curso actualizado")
+        messagebox.showinfo("Éxito", "Curso actualizado", parent=ventana)
     # -------------------------------------------------------------------------------------
 
     # ----------------  Elimina registros de profesores ----------------------------------
     def eliminar_curso():
         if not id_seleccionado:
-            messagebox.showwarning("Atención", "Seleccione un registro")
+            messagebox.showwarning("Atención", "Seleccione un registro", parent=ventana)
             return
 
-        confirmar = messagebox.askyesno("Confirmar", "¿Eliminar registro?")
+        confirmar = messagebox.askyesno("Confirmar", "¿Eliminar registro?", parent=ventana)
         if not confirmar:
             return
 
