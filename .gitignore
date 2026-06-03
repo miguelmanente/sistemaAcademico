@@ -1,0 +1,13 @@
+# Entornos virtuales de Python
+venv/
+.venv/
+env/
+
+# Carpetas de caché de Python
+**/__pycache__/
+*.pyc
+
+# Archivos ocultos de VS Code o del sistema
+.vscode/
+.DS_Store
+Thumbs.db
