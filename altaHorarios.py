@@ -45,29 +45,32 @@ def info_horarios():
     # =========================
     # CAMPOS
     # =========================
-    ttk.Label(frame_superior, text="Curso:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
+    ttk.Label(frame_superior, text="Curso:", font=("Arial", 12)).grid(row=0, column=0, sticky="e", padx=5, pady=5)
     combo_curso = ttk.Combobox(frame_superior, textvariable=curso_var, state="readonly")
     combo_curso.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Materia:").grid(row=0, column=2, sticky="e", padx=5, pady=5)
-    combo_materia = ttk.Combobox(frame_superior, textvariable=materia_var, state="readonly")
+    ttk.Label(frame_superior, text="Materia:", font=("Arial", 12)).grid(row=0, column=2, sticky="e", padx=5, pady=5)
+    combo_materia = ttk.Combobox(frame_superior, textvariable=materia_var, state="readonly", font=("Arial", 12))
     combo_materia.grid(row=0, column=3, sticky="ew", padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Día:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+    ttk.Label(frame_superior, text="Día:", font=("Arial", 12)).grid(row=1, column=0, sticky="e", padx=5, pady=5)
     combo_dia = ttk.Combobox(frame_superior, textvariable=dia_var,
-                             values=["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Lunes a Viernes"],
-                             state="readonly")
+                             values=["","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Lunes a Viernes"],
+                             state="readonly", font=("Arial", 12))
     combo_dia.grid(row=1, column=1, padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Entrada:").grid(row=1, column=2, sticky="e", padx=5, pady=5)
-    ttk.Entry(frame_superior, textvariable=entrada_var).grid(row=1, column=3, padx=5, pady=5)
+    ttk.Label(frame_superior, text="Entrada:", font=("Arial", 12)).grid(row=1, column=2, sticky="e", padx=5, pady=5)
+    ttk.Entry(frame_superior, textvariable=entrada_var, font=("Arial", 12)).grid(row=1, column=3, padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Salida:").grid(row=2, column=2, sticky="e", padx=5, pady=5)
-    ttk.Entry(frame_superior, textvariable=salida_var).grid(row=2, column=3, padx=5, pady=5)
+    ttk.Label(frame_superior, text="Salida:", font=("Arial", 12)).grid(row=2, column=2, sticky="e", padx=5, pady=5)
+    ttk.Entry(frame_superior, textvariable=salida_var, font=("Arial", 12)).grid(row=2, column=3, padx=5, pady=5)
 
     # =========================
     # TREEVIEW
     # =========================
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12))
     frame_inferior = ttk.LabelFrame(ventana, text="Listado Horarios", padding=10)
     frame_inferior.grid(row=1, column=0, sticky="nsew", padx=20, pady=10)
 
@@ -109,6 +112,8 @@ def info_horarios():
 
         cursos_dict.clear()
         materias_dict.clear()
+        cursos_dict[""] = None
+        materias_dict[""] = None
 
         cursor.execute("SELECT id_curso, nombre FROM cursos")
         for id_, nombre in cursor.fetchall():

@@ -43,20 +43,25 @@ def info_asignaciones():
     # =========================
     # CAMPOS
     # =========================
-    ttk.Label(frame_superior, text="Profesor:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
-    combo_profesor = ttk.Combobox(frame_superior, textvariable=profesor_var, state="readonly")
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12))
+
+    ttk.Label(frame_superior, text="Profesor:", font=("Arial", 12)).grid(row=0, column=0, sticky="e", padx=5, pady=5)
+    combo_profesor = ttk.Combobox(frame_superior, textvariable=profesor_var, state="readonly", font=("Arial", 12))
     combo_profesor.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Horario:").grid(row=0, column=2, sticky="e", padx=5, pady=5)
-    combo_horario = ttk.Combobox(frame_superior, textvariable=horario_var, state="readonly")
+    ttk.Label(frame_superior, text="Horario:", font=("Arial", 12)).grid(row=0, column=2, sticky="e", padx=5, pady=5)
+    combo_horario = ttk.Combobox(frame_superior, textvariable=horario_var, state="readonly", font=("Arial", 12))
     combo_horario.grid(row=0, column=3, sticky="ew", padx=5, pady=5)
 
-    ttk.Label(frame_superior, text="Situación:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+    ttk.Label(frame_superior, text="Situación:", font=("Arial", 12)).grid(row=1, column=0, sticky="e", padx=5, pady=5)
     combo_situacion = ttk.Combobox(
         frame_superior,
         textvariable=situacion_var,
-        values=["Titular", "Provisorio", "Suplente"],
-        state="readonly"
+        values=["","Titular", "Provisorio", "Suplente"],
+        state="readonly",
+        font=("Arial", 12)
     )
     combo_situacion.grid(row=1, column=1, padx=5, pady=5)
 
@@ -73,11 +78,28 @@ def info_asignaciones():
 
     tree = ttk.Treeview(frame_inferior, columns=columnas, show="headings")
     tree.grid(row=0, column=0, sticky="nsew")
+    tree.heading("id", text="ID")
+    tree.heading("profesor", text="Profesor")
+    tree.heading("curso", text="Curso")
+    tree.heading("materia", text="Materia")
+    tree.heading("dia", text="Día")
+    tree.heading("entrada", text="Entrada")
+    tree.heading("salida", text="Salida")
+    tree.heading("situacion", text="Situación")
 
-    for col in columnas:
-        tree.heading(col, text=col.capitalize())
+    #tree.column("id", width=50, stretch=False)
+    tree.column("id", width=0, minwidth=0, stretch=False)
+    tree.column("profesor", width=230)
+    tree.column("curso", width=50)
+    tree.column("materia", width=230)
+    tree.column("dia", width=50)
+    tree.column("entrada", width=50)
+    tree.column("salida", width=50)
+    tree.column("situacion", width=70)
+    #for col in columnas:
+    #    tree.heading(col, text=col.capitalize())
 
-    tree.column("id", width=0, stretch=False)
+   # tree.column("id", width=0, stretch=False)
 
     scrollbar_y = ttk.Scrollbar(frame_inferior, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scrollbar_y.set)
@@ -96,6 +118,8 @@ def info_asignaciones():
 
         profesores_dict.clear()
         horarios_dict.clear()
+        profesores_dict[""] = None
+        horarios_dict[""] = None
 
         # Profesores
         cursor.execute("SELECT id_profesor, apenom FROM profesores")

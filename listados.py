@@ -43,26 +43,16 @@ def ventana_listado(tipo):
     frame_filtros = ttk.Frame(ventana)
     frame_filtros.grid(row=0, column=0, sticky="ew", padx=10, pady=5)
 
-    ttk.Label(frame_filtros, text="Buscar Profesor:").grid(row=0, column=0)
+    ttk.Label(frame_filtros, text="Buscar Profesor:", font=("Arial", 12)).grid(row=0, column=0)
     entry_buscar = ttk.Entry(frame_filtros, textvariable=buscar_var)
     entry_buscar.grid(row=0, column=1, padx=5)
 
-    ttk.Label(frame_filtros, text="Curso:").grid(row=0, column=2)
-    combo_curso = ttk.Combobox(frame_filtros, textvariable=curso_var, state="readonly")
+    ttk.Label(frame_filtros, text="Curso:", font=("Arial", 12)).grid(row=0, column=2)
+    combo_curso = ttk.Combobox(frame_filtros, textvariable=curso_var, state="readonly", font=("Arial", 12))
     combo_curso.grid(row=0, column=3, padx=5)
 
     ttk.Button(frame_filtros, text="Filtrar", command=lambda: cargar()).grid(row=0, column=4, padx=5)
 
-    # # =========================
-    # # TREEVIEW
-    # # =========================
-    # columnas = ("profesor", "curso", "materia", "dia", "entrada", "salida")
-
-    # tree = ttk.Treeview(ventana, columns=columnas, show="headings")
-    # tree.grid(row=1, column=0, sticky="nsew")
-
-    # for col in columnas:
-    #     tree.heading(col, text=col.capitalize())
     # =========================
     # FRAME TREEVIEW
     # =========================
@@ -79,27 +69,29 @@ def ventana_listado(tipo):
     # =========================
     # TREEVIEW
     # =========================
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12))
 
-    columnas = (
-        "profesor",
-        "curso",
-        "materia",
-        "dia",
-        "entrada",
-        "salida"
-    )
+    columnas = ("profesor", "curso", "materia", "dia", "entrada", "salida" )
+    tree = ttk.Treeview(frame_tree, columns=columnas, show="headings")
+    tree.grid(row=0, column=0, sticky="nsew")
+    
 
-    tree = ttk.Treeview(
-        frame_tree,
-        columns=columnas,
-        show="headings"
-    )
+    tree.heading("profesor", text="Profesor")
+    tree.heading("curso", text="Curso")
+    tree.heading("materia", text="Materia")
+    tree.heading("dia", text="Día")
+    tree.heading("entrada", text="Entrada")
+    tree.heading("salida", text="Salida")
+  
+    tree.column("profesor", width=230)
+    tree.column("curso", width=50)
+    tree.column("materia", width=230)
+    tree.column("dia", width=50)
+    tree.column("entrada", width=50)
+    tree.column("salida", width=50)
 
-    tree.grid(
-        row=0,
-        column=0,
-        sticky="nsew"
-    )
 
     # =========================
     # SCROLL VERTICAL
@@ -142,30 +134,7 @@ def ventana_listado(tipo):
         yscrollcommand=scroll_y.set,
         xscrollcommand=scroll_x.set
 
-    )
-
-    # =========================
-    # ENCABEZADOS
-    # =========================
-
-    for col in columnas:
-
-        tree.heading(
-            col,
-            text=col.capitalize()
-        )
-
-    # =========================
-    # ANCHOS
-    # =========================
-
-    tree.column("profesor", width=200)
-    tree.column("curso", width=120)
-    tree.column("materia", width=200)
-    tree.column("dia", width=100)
-    tree.column("entrada", width=100)
-    tree.column("salida", width=100)
-        
+    )    
 
     # =========================
     # CARGAR CURSOS
