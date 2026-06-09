@@ -37,13 +37,16 @@ def listado_personal_turnos():
     # ======================================================
     # COMBO TURNOS
     # ======================================================
-       
-    ttk.Label(frame, text="Turno:").grid(row=0, column=0, padx=5, pady=5)
-    combo_turno = ttk.Combobox(frame, textvariable=turno_var, values=["Mañana", "Tarde", "Noche"], state="readonly", width=20)
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12)) 
+      
+    ttk.Label(frame, text="Turno:", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
+    combo_turno = ttk.Combobox(frame, textvariable=turno_var, values=["Mañana", "Tarde", "Noche"], state="readonly", width=20, font=("Arial", 12))
     combo_turno.grid(row=0, column=1,  padx=5, pady=5)
 
-    ttk.Label(frame, text="Día").grid(row=0, column=2, padx=5, pady=5)
-    combo_dia = ttk.Combobox(frame, textvariable=dia_var, values=["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"], state="readonly", width=15)
+    ttk.Label(frame, text="Día", font=("Arial", 12)).grid(row=0, column=2, padx=5, pady=5)
+    combo_dia = ttk.Combobox(frame, textvariable=dia_var, values=["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"], state="readonly", width=15, font=("Arial", 12))
     combo_dia.grid(row=0, column=3, padx=5, pady=5)
 
     # ======================================================
@@ -120,7 +123,7 @@ def listado_personal_turnos():
     # -------------------------------------------------------------------------------
 
     # ============================== BOTÓN ============================================
-    ttk.Button(frame, text="Buscar", command=cargar_tree).grid(row=0, column=2,padx=10)
+    ttk.Button(frame, text="🔍 Buscar", command=cargar_tree).grid(row=0, column=2,padx=10)
     # ---------------------------------------------------------------------------------
 
     # =========================  INICIO ============================================

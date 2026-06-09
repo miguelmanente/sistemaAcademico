@@ -50,13 +50,13 @@ def abrir_parte_diario():
     # SELECTORES
     # =========================
 
-    tk.Label(ventana, text="Turno").pack()
-    tk.Entry(ventana, textvariable=turno_var).pack()
-    tk.Label(ventana, text="Fecha").pack()
-    tk.Entry(ventana, textvariable=fecha_var).pack()
-    tk.Label(ventana, text="Día").pack()
-    tk.Entry(ventana, textvariable=dia_var).pack()
-    lbl_encabezado = tk.Label(ventana, text=encabezado(), justify="left" )
+    tk.Label(ventana, text="Turno", font=("Arial", 12)).pack()
+    tk.Entry(ventana, textvariable=turno_var, font=("Arial", 12)).pack()
+    tk.Label(ventana, text="Fecha", font=("Arial", 12)).pack()
+    tk.Entry(ventana, textvariable=fecha_var, font=("Arial", 12)).pack()
+    tk.Label(ventana, text="Día", font=("Arial", 12)).pack()
+    tk.Entry(ventana, textvariable=dia_var, font=("Arial", 12)).pack()
+    lbl_encabezado = tk.Label(ventana, text=encabezado(), justify="left", font=("Arial", 12))
     lbl_encabezado.pack()
 
     # =================  ACTUALIZAR LO QUE ESCRIBO EN LOS ENTRYS ==============
@@ -75,10 +75,11 @@ def abrir_parte_diario():
     # ==========================================================================
     #                       TREEVIEW
     # ==========================================================================
-    tree = ttk.Treeview(ventana,
-        columns=("nombre", "detalle", "entrada", "salida", "firma"),
-        show="headings"
-    )
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12)) 
+    
+    tree = ttk.Treeview(ventana, columns=("nombre", "detalle", "entrada", "salida", "firma"), show="headings")
 
     tree.heading("nombre", text="Nombre")
     tree.heading("detalle", text="Cargo/Materia")
@@ -257,25 +258,18 @@ def abrir_parte_diario():
     frame_botones = tk.Frame(ventana)
     frame_botones.pack(pady=10)
 
-    tk.Button(
-        frame_botones,
-        text="Cargar",
-        command=lambda: cargar_parte_diario(tree, turno_var, dia_var, conn)
+    tk.Button(frame_botones, text="💾 Cargar", font=("Arial", 12),
+        command=lambda: cargar_parte_diario(tree, turno_var, dia_var, conn)).pack(side="left", padx=5)
+
+    tk.Button(frame_botones, text=" 📊 Exportar Excel", font=("Arial", 12), command=lambda: exportar_excel(tree)
     ).pack(side="left", padx=5)
 
-    tk.Button(
-        frame_botones,
-        text="Exportar Excel",
-        command=lambda: exportar_excel(tree)
+    tk.Button(frame_botones, text=" 📄Exportar PDF", font=("Arial", 12),
+        command=lambda: exportar_pdf_pro(tree, encabezado(fecha_var.get(), dia_var.get())        )
     ).pack(side="left", padx=5)
 
-    tk.Button(
-        frame_botones,
-        text="Exportar PDF",
-        command=lambda: exportar_pdf_pro(
-            tree,
-            encabezado(fecha_var.get(), dia_var.get())
-        )
-    ).pack(side="left", padx=5)
+    tk.Button(frame_botones, text="❌ Cerrar", font=("Arial", 12),
+        command=ventana.destroy).pack(side="left", padx=5)
+
     # =================================== INICIO ===========================================
     centrar_ventana(ventana)

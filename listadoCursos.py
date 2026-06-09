@@ -35,40 +35,30 @@ def ventana_listado_curso():
     # =========================
     # FRAME FILTROS
     # =========================
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12)) 
+    
     frame_filtros = ttk.Frame(ventana)
     frame_filtros.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
 
-    ttk.Label(frame_filtros, text="Curso:").grid(row=0, column=0, padx=5)
+    ttk.Label(frame_filtros, text="Curso:", font=("Arial", 12)).grid(row=0, column=0, padx=5)
 
-    combo_curso = ttk.Combobox(
-        frame_filtros,
-        textvariable=curso_var,
-        state="readonly",
-        width=30
-    )
+    combo_curso = ttk.Combobox(frame_filtros, textvariable=curso_var, state="readonly", width=30, font=("Arial", 12))
 
     combo_curso.grid(row=0, column=1, padx=5)
 
-    ttk.Label(frame_filtros, text="Buscar Profesor:").grid(row=0, column=2, padx=5)
+    ttk.Label(frame_filtros, text="Buscar Profesor:", font=("Arial", 12)).grid(row=0, column=2, padx=5)
 
-    entry_buscar = ttk.Entry(frame_filtros, textvariable=buscar_var)
+    entry_buscar = ttk.Entry(frame_filtros, textvariable=buscar_var, font=("Arial", 12))
     entry_buscar.grid(row=0, column=3, padx=5)
 
     # =========================
     # TREEVIEW
     # =========================
-    columnas = (
-        "profesor",
-        "materia",
-        "dia",
-        "situacion"
-    )
+    columnas = ("profesor", "materia", "dia", "situacion")
 
-    tree = ttk.Treeview(
-        ventana,
-        columns=columnas,
-        show="headings"
-    )
+    tree = ttk.Treeview(ventana, columns=columnas, show="headings")
 
     tree.grid(row=1, column=0, sticky="nsew", padx=10)
 
@@ -82,11 +72,7 @@ def ventana_listado_curso():
     tree.column("dia", width=150, anchor="center")
     tree.column("situacion", width=150, anchor="center")
 
-    scrollbar = ttk.Scrollbar(
-        ventana,
-        orient="vertical",
-        command=tree.yview
-    )
+    scrollbar = ttk.Scrollbar(ventana, orient="vertical", command=tree.yview)
 
     tree.configure(yscrollcommand=scrollbar.set)
     scrollbar.grid(row=1, column=1, sticky="ns")

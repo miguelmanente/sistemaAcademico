@@ -252,7 +252,7 @@ def ventana_estadisticas():
 
         text=f"Total Institucional: {total_inasistencias} días",
 
-        font=("Arial", 11, "bold")
+        font=("Arial", 12, "bold")
 
     ).pack(anchor="w", pady=5)
 
@@ -262,7 +262,7 @@ def ventana_estadisticas():
 
         text=f"Cantidad de Docentes: {cantidad_docentes}",
 
-        font=("Arial", 11)
+        font=("Arial", 12)
 
     ).pack(anchor="w", pady=5)
 
@@ -272,7 +272,7 @@ def ventana_estadisticas():
 
         text=f"Promedio Institucional: {promedio} días",
 
-        font=("Arial", 11)
+        font=("Arial", 12)
 
     ).pack(anchor="w", pady=5)
 
@@ -282,7 +282,7 @@ def ventana_estadisticas():
 
         text=f"Más Ausencias: {mayor} ({docentes.get(mayor,0)} días)",
 
-        font=("Arial", 11),
+        font=("Arial", 12),
 
         foreground="red"
 
@@ -294,7 +294,7 @@ def ventana_estadisticas():
 
         text=f"Menos Ausencias: {menor} ({docentes.get(menor,0)} días)",
 
-        font=("Arial", 11),
+        font=("Arial", 12),
 
         foreground="green"
 
@@ -314,7 +314,7 @@ def ventana_estadisticas():
 
         text="Resumen por Tipo",
 
-        font=("Arial", 11, "bold")
+        font=("Arial", 12, "bold")
 
     ).pack(anchor="w")
 

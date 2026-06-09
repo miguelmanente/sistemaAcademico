@@ -34,41 +34,45 @@ def ventana_asistencias():
     profesores_dict = {}
     id_seleccionado = None
 
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12)) 
+
     # ============ FRAME SUPERIOR =================================
     frame = ttk.LabelFrame(ventana, text="Inasistencia Docente")
     frame.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
 
     # ================ COMBO PROFESORES ============================
-    ttk.Label(frame, text="Profesor").grid(row=0, column=0, padx=5, pady=5)
+    ttk.Label(frame, text="Profesor", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
     combo_profesor = ttk.Combobox(frame, textvariable=profesor_var, width=40, state="readonly")
     combo_profesor.grid(row=0, column=1, padx=5, pady=5)
 
     # ====================  INGRESOS DE FECHAS ========================
     ttk.Label(
         frame,
-        text="Desde"
+        text="Desde", font=("Arial", 12)
     ).grid(row=1, column=0)
 
     ttk.Entry(
         frame,
-        textvariable=desde_var
+        textvariable=desde_var, font=("Arial", 12)
     ).grid(row=1, column=1)
 
 
     ttk.Label(
         frame,
-        text="Hasta"
+        text="Hasta", font=("Arial", 12)
     ).grid(row=1, column=2)
 
     ttk.Entry(
         frame,
-        textvariable=hasta_var
+        textvariable=hasta_var, font=("Arial", 12)
     ).grid(row=1, column=3)
 
     # ========================== ESTADO =============================
     ttk.Label(
         frame,
-        text="Estado"
+        text="Estado", font=("Arial", 12)
     ).grid(row=2, column=0)
 
     combo_estado = ttk.Combobox(
@@ -78,7 +82,7 @@ def ventana_asistencias():
         textvariable=estado_var,
 
         values=[
-
+            "",
             "Presente",
             "Ausente",
             "Licencia Médica",
@@ -104,12 +108,12 @@ def ventana_asistencias():
     # =========================== OBSERVACIONES ==========================
     ttk.Label(
         frame,
-        text="Observación"
+        text="Observación", font=("Arial", 12)
     ).grid(row=3, column=0)
 
     ttk.Entry(
         frame,
-        textvariable=observacion_var,
+        textvariable=observacion_var, font=("Arial", 12),
         width=80
     ).grid(
         row=3,
@@ -118,23 +122,24 @@ def ventana_asistencias():
         padx=5,
         pady=5
     )
+    # =================================================================
+    # CONTENEDOR PARA EL TREEVIEW Y SCROLLBARS (Fila 1 de la ventana)
+    # =================================================================
+    frame_tabla = ttk.Frame(ventana)
+    frame_tabla.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+    # Configuramos el peso dentro del nuevo frame para que el treeview se estire
+    frame_tabla.rowconfigure(0, weight=1)
+    frame_tabla.columnconfigure(0, weight=1)
 
     # ============================= TREEVIEW ============================
-    columnas = (
+    columnas = ("id", "profesor", "desde", "hasta", "dias", "estado", "observacion")
+    
+    # IMPORTANTE: Ahora el padre de tree es 'frame_tabla'
+    tree = ttk.Treeview(frame_tabla, columns=columnas, show="headings")
+    tree.grid(row=0, column=0, sticky="nsew")
 
-        "id",
-        "profesor",
-        "desde",
-        "hasta",
-        "dias",
-        "estado",
-        "observacion"
-    )
-
-    tree = ttk.Treeview(ventana, columns=columnas, show="headings")
-    tree.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
-
-     # Encabezados
+    # Encabezados
     tree.heading("id", text="ID")
     tree.heading("profesor", text="Profesor")
     tree.heading("desde", text="Desde el Día")
@@ -143,6 +148,7 @@ def ventana_asistencias():
     tree.heading("estado", text="Estado")
     tree.heading("observacion", text="Observación")
    
+    # Configuración de columnas
     tree.column("id", width=0, stretch=False)
     tree.column("profesor", width=150, anchor="center")
     tree.column("desde", width=100, anchor="center")
@@ -151,6 +157,18 @@ def ventana_asistencias():
     tree.column("estado", width=100, anchor="center")
     tree.column("observacion", width=200, anchor="w")
 
+    # ============================= SCROLLBARS ============================
+    # IMPORTANTE: El padre de los scrollbars también es 'frame_tabla'
+    scrollbar_y = ttk.Scrollbar(frame_tabla, orient="vertical", command=tree.yview)
+    scrollbar_x = ttk.Scrollbar(frame_tabla, orient="horizontal", command=tree.xview)
+    
+    tree.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+
+    # Ubicación de los componentes DENTRO del frame_tabla
+    scrollbar_y.grid(row=0, column=1, sticky="ns")
+    scrollbar_x.grid(row=1, column=0, sticky="ew")
+
+    # ==========================================================
     # ==========  RESUMEN DE INASISTENCIAS POR PROFESOR ========================
     lbl_resumen = ttk.Label(ventana, text="Resumen de inasistencias: ", font=("Arial", 11, "bold"), foreground="blue")
     lbl_resumen.grid(row=3, column=0, sticky="w", padx=10, pady=5)
@@ -181,7 +199,7 @@ def ventana_asistencias():
 
         profesores_dict.clear()
 
-        lista = []
+        lista = [""]
 
         for id_profesor, nombre in resultados:
 

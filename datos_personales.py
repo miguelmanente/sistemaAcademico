@@ -90,8 +90,6 @@ def info_profesor():
     entry_fecha.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
 
 
-    
-
     # =========================
     # BOTONES
     # =========================

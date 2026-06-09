@@ -56,54 +56,55 @@ def ventana_historial():
     # =====================================================
     #                 FRAME SUPERIOR
     # =====================================================
+    style = ttk.Style()
+    style.configure("TCombobox", font=("Arial", 12))
+    ventana.option_add("*TCombobox*Listbox.font", ("Arial", 12)) 
 
     frame = ttk.LabelFrame(ventana, text="Datos Historial")
     frame.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
 
     # PROFESOR
-    ttk.Label(frame, text="Profesor").grid(row=0, column=0, padx=5, pady=10)
+    ttk.Label(frame, text="Profesor", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=10)
 
     combo_profesor = ttk.Combobox(frame, textvariable=profesor_var, width=40, state="readonly")
     combo_profesor.grid(row=0, column=1, padx=5, pady=10)
 
     # MATERIA
-    ttk.Label(frame, text="Materia").grid(row=0, column=2, pady=10)
+    ttk.Label(frame, text="Materia", font=("Arial", 12)).grid(row=0, column=2, pady=10)
 
     combo_materia = ttk.Combobox(frame, textvariable=materia_var, width=30, state="readonly")
     combo_materia.grid(row=0, column=3, padx=10)
 
     # CURSO
-    ttk.Label(frame, text="Curso").grid(row=1, column=0, pady=10)
+    ttk.Label(frame, text="Curso", font=("Arial", 12)).grid(row=1, column=0, pady=10)
 
     combo_curso = ttk.Combobox(frame, textvariable=curso_var, width=30, state="readonly")
     combo_curso.grid(row=1, column=1, padx=10)
 
     # SITUACION
-    ttk.Label(frame, text="Situación").grid(row=1, column=2, pady=10)
+    ttk.Label(frame, text="Situación", font=("Arial", 12)).grid(row=1, column=2, pady=10)
 
     combo_situacion = ttk.Combobox(
         frame,
         textvariable=situacion_var,
         values=["Titular", "Provisorio", "Suplente"],
-        state="readonly"
+        state="readonly",
+        font=("Arial", 12)
     )
 
     combo_situacion.grid(row=1, column=3)
 
     # FECHA INICIO
-    ttk.Label(frame, text="Fecha Inicio").grid(row=2, column=0, pady=10)
-
-    ttk.Entry(frame, textvariable=inicio_var).grid(row=2, column=1, pady=10)
+    ttk.Label(frame, text="Fecha Inicio", font=("Arial", 12)).grid(row=2, column=0, pady=10)
+    ttk.Entry(frame, textvariable=inicio_var, font=("Arial", 12)).grid(row=2, column=1, pady=10)
 
     # FECHA FIN
-    ttk.Label(frame, text="Fecha Fin").grid(row=2, column=2, pady=10)
-
-    ttk.Entry(frame, textvariable=fin_var).grid(row=2, column=3, pady=10)
+    ttk.Label(frame, text="Fecha Fin", font=("Arial", 12)).grid(row=2, column=2, pady=10)
+    ttk.Entry(frame, textvariable=fin_var, font=("Arial", 12)).grid(row=2, column=3, pady=10)
 
     # OBSERVACIONES
-    ttk.Label(frame, text="Observaciones").grid(row=3, column=0, pady=10)
-
-    ttk.Entry(frame, textvariable=observacion_var, width=80).grid(
+    ttk.Label(frame, text="Observaciones", font=("Arial", 12)).grid(row=3, column=0, pady=10)
+    ttk.Entry(frame, textvariable=observacion_var, width=80, font=("Arial", 12)).grid(
         row=3,
         column=1,
         columnspan=3,
@@ -144,70 +145,62 @@ def ventana_historial():
 
     ttk.Label(frame_filtro, text="Situación").grid(row=0, column=2)
 
-    combo_filtro = ttk.Combobox(
-        frame_filtro,
-        textvariable=filtro_situacion,
-        values=["Todos", "Titular", "Provisorio", "Suplente"],
-        state="readonly"
-    )
+    combo_filtro = ttk.Combobox(frame_filtro, textvariable=filtro_situacion, values=["Todos", "Titular", "Provisorio", "Suplente"], state="readonly")
 
     combo_filtro.grid(row=0, column=3, padx=5)
     combo_filtro.current(0)
 
-    ttk.Button(
-        frame_filtro,
-        text="Buscar",
-        command=lambda: cargar_tree()
-    ).grid(row=0, column=4, padx=5)
+    ttk.Button(frame_filtro, text="Buscar", command=lambda: cargar_tree()).grid(row=0, column=4, padx=5)
 
     # =====================================================
-    #                 DISEÑO DEL TREEVIEW
+   
+    # ====================================================================
     # =====================================================
+    #                  DISEÑO DEL TREEVIEW
+    # =====================================================
+    # El frame se ubica en la fila 2 de la ventana principal
+    frame_tabla = ttk.Frame(ventana)
+    frame_tabla.grid(row=2, column=0, sticky="nsew", padx=10, pady=10)
 
-    columnas = (
-        "id_historial",
-        "id_profesor",
-        "profesor",
-        "materia",
-        "curso",
-        "situacion",
-        "inicio",
-        "fin",
-        "antiguedad",   
-        "observaciones"
-    )
+    # Configuramos el peso para que la fila 0 (el Treeview) se estire
+    frame_tabla.rowconfigure(0, weight=1)
+    frame_tabla.columnconfigure(0, weight=1)
+    
+    columnas = ("id_historial", "id_profesor", "profesor", "materia", "curso", "situacion", "inicio", "fin", "antiguedad", "observaciones")
 
-    tree = ttk.Treeview(
-        ventana,
-        columns=columnas,
-        show="headings"
-    )
+    # El padre es frame_tabla
+    tree = ttk.Treeview(frame_tabla, columns=columnas, show="headings")
 
-    tree.grid(
-        row=2,
-        column=0,
-        sticky="nsew",
-        padx=10,
-        pady=10
-    )
+    # CORRECCIÓN: Se ubica en la row=0 (la que tiene el weight) y quitamos padx/pady internos
+    tree.grid(row=0, column=0, sticky="nsew")
 
     for col in columnas:
         tree.heading(col, text=col.capitalize())
 
-    # ocultar IDs
+    # Ocultar IDs
     tree.column("id_historial", width=0, stretch=False)
     tree.column("id_profesor", width=0, stretch=False)
 
-    # tamaños
-    tree.column("profesor", width=220)
-    tree.column("materia", width=180)
-    tree.column("curso", width=50)
-    tree.column("situacion", width=100)
-    tree.column("inicio", width=50)
-    tree.column("fin", width=50)
-    tree.column("antiguedad", width=50)
-    tree.column("observaciones", width=100)
+    # Tamaños y alineaciones
+    tree.column("profesor", width=220, anchor="w")
+    tree.column("materia", width=180, anchor="w")
+    tree.column("curso", width=60, anchor="center")
+    tree.column("situacion", width=100, anchor="center")
+    tree.column("inicio", width=80, anchor="center")
+    tree.column("fin", width=80, anchor="center")
+    tree.column("antiguedad", width=80, anchor="center")
+    tree.column("observaciones", width=150, anchor="w")
 
+    # ============================= SCROLLBARS ============================
+    # El padre de los scrollbars también es 'frame_tabla'
+    scrollbar_y = ttk.Scrollbar(frame_tabla, orient="vertical", command=tree.yview)
+    scrollbar_x = ttk.Scrollbar(frame_tabla, orient="horizontal", command=tree.xview)
+    
+    tree.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+
+    # Ubicación perfecta de los componentes DENTRO de frame_tabla
+    scrollbar_y.grid(row=0, column=1, sticky="ns")  # Al lado del Treeview
+    scrollbar_x.grid(row=1, column=0, sticky="ew")  # Debajo del Treeview
     # =====================================================
     #     CARGAR COMBOS CON PROFESORES, MATERIAS Y CURSOS
     # =====================================================
@@ -1162,7 +1155,7 @@ def ventana_historial():
 
         messagebox.showinfo(
             "PDF",
-            f"Certificación generada:\n{archivo}"
+            f"Certificación generada:\n{archivo}", parent=ventana
         )
     #========================================================
 
@@ -1199,7 +1192,7 @@ def ventana_historial():
 
     ttk.Button(
         frame_btn,
-        text="💾 Guardar",
+        text="💾 Guardar", 
         command=guardar
     ).grid(row=0, column=1, padx=5)
 
