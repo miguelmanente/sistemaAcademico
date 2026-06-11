@@ -194,11 +194,11 @@ def info_horarios():
     # ----------------------   GUARDA LOS NUEVOS HORARIOS ---------------------------------------
     def guardar():
         if not curso_var.get() or not materia_var.get() or not dia_var.get():
-            messagebox.showwarning("Atención", "Complete todos los campos")
+            messagebox.showwarning("Atención", "Complete todos los campos", parent=ventana)
             return
 
         if not validar_hora(entrada_var.get()) or not validar_hora(salida_var.get()):
-            messagebox.showerror("Error", "Hora inválida")
+            messagebox.showerror("Error", "Hora inválida", parent=ventana)
             return
 
         try:
@@ -220,19 +220,19 @@ def info_horarios():
             crear_backup()
             conn.close()
 
-            messagebox.showinfo("OK", "Horario guardado")
+            messagebox.showinfo("OK", "Horario guardado", parent=ventana)
             cargar_tree()
             limpiar()
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror("Error", str(e), parent=ventana)
     # -----------------------------------------------------------------------------------------
 
     # --------------------- MODIFICAR REGISTRO DE LA TABALA ------------------------------------
     def modificar():
         nonlocal id_seleccionado
         if not id_seleccionado:
-            messagebox.showwarning("Atención", "Seleccione un registro")
+            messagebox.showwarning("Atención", "Seleccione un registro", parent=ventana)
             return
 
         conn = conectar()
@@ -264,10 +264,10 @@ def info_horarios():
         nonlocal id_seleccionado
 
         if not id_seleccionado:
-            messagebox.showwarning("Atención", "Seleccione un registro")
+            messagebox.showwarning("Atención", "Seleccione un registro", parent=ventana)
             return
 
-        if not messagebox.askyesno("Confirmar", "¿Eliminar horario?"):
+        if not messagebox.askyesno("Confirmar", "¿Eliminar horario?", parent=ventana):
             return
 
         conn = conectar()
